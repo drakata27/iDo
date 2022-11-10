@@ -27,7 +27,7 @@ struct TaskView: View {
     @State private var isAdded = false
     @State private var taskIsEmpty = false
     
-    @State private var typeOptions: [String] = [
+    let typeOptions: [String] = [
         "University", "Work", "Self-Improvement", "Groceries", "Personal", "Fitness", "Other"
     ]
     @State private var selectedTypeOption = "Other"

@@ -36,6 +36,7 @@ struct TasksView: View {
                         VStack(alignment: .leading) {
                             Text(task.name)
                                 .font(.headline)
+                                .padding(2)
                             
                             Text(task.type)
                                 .foregroundColor(.secondary)
@@ -47,6 +48,7 @@ struct TasksView: View {
                                 .foregroundColor(.green)
                         }
                     }
+                    .padding(2)
                     .swipeActions(edge: .leading) {
                         if task.isCompleted {
                             Button {
