@@ -92,7 +92,9 @@ struct TasksView: View {
                     } label: {
                         Label("Theme", systemImage: "trash.fill")
                     }
-                    
+                }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
             }
