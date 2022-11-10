@@ -27,22 +27,49 @@ struct TaskView: View {
     @State private var isAdded = false
     @State private var taskIsEmpty = false
     
+    @State private var typeOptions: [String] = [
+        "University", "Work", "Self-Improvement", "Groceries", "Personal", "Fitness", "Other"
+    ]
+    @State private var selectedTypeOption = "Other"
+    
     @State private var feedback = UINotificationFeedbackGenerator()
     @FocusState private var isFocused: Bool
     let customColour: CustomColour
     
     var body: some View {
         NavigationView {
-            Form {
+            VStack {
                 TextField("Task name", text: $name)
                     .font(.title)
                     .focused($isFocused)
+                    .padding(4)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(customColour.theme, lineWidth: 2)
+                        )
+                        .padding()
                     
-                TextField("Task type", text: $type)
-                    .font(.title)
-                    .focused($isFocused)
+                HStack {
+                    TextField("Task type", text: $type)
+                        .font(.title)
+                        .focused($isFocused)
+                        .padding(4)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(customColour.theme, lineWidth: 2)
+                            )
+                        .padding()
+                    
+                    Picker("Please choose a color", selection: $selectedTypeOption) {
+                        ForEach(typeOptions, id: \.self) { option in
+                            Text(option)
+                        }
+                    }
+                    .onChange(of: selectedTypeOption) { newValue in
+                        type = selectedTypeOption
+                    }
+                }
                 
-        
                 Button {
                     addTask()
                 } label: {
@@ -52,6 +79,8 @@ struct TaskView: View {
                 .padding()
                 .buttonStyle(BlueButton())
                 .frame(maxWidth: .infinity)
+                
+                Spacer()
             }
             .environmentObject(tasks)
             .navigationTitle("Create a task")
