@@ -11,7 +11,7 @@ import SwiftUI
 struct iDoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(customColour: CustomColour())
         }
     }
 }
