@@ -15,6 +15,7 @@
 		2207F192291954C900B14A13 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207F191291954C900B14A13 /* Task.swift */; };
 		2207F1942919560800B14A13 /* FileManager-DocumentsDirectory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207F1932919560800B14A13 /* FileManager-DocumentsDirectory.swift */; };
 		2207F1962919574F00B14A13 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2207F1952919574F00B14A13 /* TaskView.swift */; };
+		22466841291FBD850017D2C8 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22466840291FBD850017D2C8 /* EditView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		2207F191291954C900B14A13 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		2207F1932919560800B14A13 /* FileManager-DocumentsDirectory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "FileManager-DocumentsDirectory.swift"; sourceTree = "<group>"; };
 		2207F1952919574F00B14A13 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		22466840291FBD850017D2C8 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				2207F1812919535C00B14A13 /* iDoApp.swift */,
 				2207F1832919535C00B14A13 /* ContentView.swift */,
 				2207F18F2919537800B14A13 /* TasksView.swift */,
+				22466840291FBD850017D2C8 /* EditView.swift */,
 				2207F1952919574F00B14A13 /* TaskView.swift */,
 				2207F191291954C900B14A13 /* Task.swift */,
 				2207F1932919560800B14A13 /* FileManager-DocumentsDirectory.swift */,
@@ -153,6 +156,7 @@
 				2207F1942919560800B14A13 /* FileManager-DocumentsDirectory.swift in Sources */,
 				2207F1902919537800B14A13 /* TasksView.swift in Sources */,
 				2207F1962919574F00B14A13 /* TaskView.swift in Sources */,
+				22466841291FBD850017D2C8 /* EditView.swift in Sources */,
 				2207F1842919535C00B14A13 /* ContentView.swift in Sources */,
 				2207F1822919535C00B14A13 /* iDoApp.swift in Sources */,
 			);

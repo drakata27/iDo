@@ -13,6 +13,8 @@ class Task: Identifiable, Codable {
     var type: String
     var isCompleted = false
     
+    static let example = Task(name: "Finish iDo", type: "Programming")
+    
     init(id: UUID = UUID(), name: String, type: String, isCompleted: Bool = false) {
         self.id = id
         self.name = name
