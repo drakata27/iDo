@@ -49,7 +49,7 @@ struct TaskView: View {
                         )
                         .padding()
                     
-                HStack {
+                VStack {
                     TextField("Task type", text: $type)
                         .font(.title)
                         .focused($isFocused)
@@ -60,11 +60,12 @@ struct TaskView: View {
                             )
                         .padding()
                     
-                    Picker("Please choose a color", selection: $selectedTypeOption) {
+                    Picker("Select type", selection: $selectedTypeOption) {
                         ForEach(typeOptions, id: \.self) { option in
                             Text(option)
                         }
                     }
+                    .pickerStyle(WheelPickerStyle())
                     .onChange(of: selectedTypeOption) { newValue in
                         type = selectedTypeOption
                     }
@@ -111,6 +112,7 @@ struct TaskView: View {
         
         if element.name.isEmpty {
             taskIsEmpty = true
+            feedback.notificationOccurred(.error)
         } else {
             tasks.add(element)
             name = ""

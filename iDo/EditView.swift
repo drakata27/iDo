@@ -26,40 +26,19 @@ struct EditView: View {
     @State private var selectedTypeOption = "Other"
     
     var body: some View {
+        Form {
             VStack {
-                HStack {
-                    Text("Current task:")
-                        .font(.headline)
-                    Text(task.name)
-                        .font(.headline)
-                        .foregroundColor(customColour.theme)
-                    Spacer()
-                }
-                .padding()
-                    
-                TextField("Task name", text: $name)
-                    .font(.title)
-                    .focused($isFocused)
-                    .padding(4)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(customColour.theme, lineWidth: 2)
-                        )
-                        .padding()
-                
-                HStack {
-                    Text("Type:")
-                        .font(.headline)
-                    Text(task.type)
-                        .font(.headline)
-                        .foregroundColor(customColour.theme)
-
-                    Spacer()
-                }
-                .padding()
-                
-                HStack {
-                    TextField("Type", text: $type)
+                    HStack {
+                        Text("Current task:")
+                            .font(.headline)
+                        Text(task.name)
+                            .font(.headline)
+                            .foregroundColor(customColour.theme)
+                        Spacer()
+                    }
+                    .padding()
+                        
+                    TextField("Task name", text: $name)
                         .font(.title)
                         .focused($isFocused)
                         .padding(4)
@@ -67,59 +46,78 @@ struct EditView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(customColour.theme, lineWidth: 2)
                             )
-                        .padding()
+                    HStack {
+                        Text("Type:")
+                            .font(.headline)
+                        Text(task.type)
+                            .font(.headline)
+                            .foregroundColor(customColour.theme)
+
+                        Spacer()
+                    }
+                    .padding()
                     
-                    Picker("Please choose a color", selection: $selectedTypeOption) {
-                        ForEach(typeOptions, id: \.self) { option in
-                            Text(option)
+                    VStack {
+                        TextField("Type", text: $type)
+                            .font(.title)
+                            .focused($isFocused)
+                            .padding(4)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14)
+                                        .stroke(customColour.theme, lineWidth: 2)
+                                )
+                        
+                        Picker("Select type", selection: $selectedTypeOption) {
+                            ForEach(typeOptions, id: \.self) { option in
+                                Text(option)
+                            }
+                        }
+                        .pickerStyle(WheelPickerStyle())
+                        .onChange(of: selectedTypeOption) { newValue in
+                            type = selectedTypeOption
                         }
                     }
-                    .onChange(of: selectedTypeOption) { newValue in
-                        type = selectedTypeOption
-                    }
-                }
-                
-                Button {
-                    saveChanges()
-                } label: {
-                    Text("Save")
-                        .foregroundColor(.white)
-                }
-                .padding()
-                .buttonStyle(BlueButton())
-                .frame(maxWidth: .infinity)
-                Spacer()
-
-            }
-            .navigationTitle("Edit Task")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItemGroup(placement: .keyboard) {
-                    Spacer()
+                    
                     Button {
-                        isFocused = false
+                        saveChanges()
                     } label: {
-                        Image(systemName: "keyboard.chevron.compact.down")
-                            .foregroundColor(customColour.theme)
+                        Text("Save")
+                            .foregroundColor(.white)
+                    }
+                    .padding()
+                    .buttonStyle(BlueButton())
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+                .navigationTitle("Edit Task")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button {
+                            isFocused = false
+                        } label: {
+                            Image(systemName: "keyboard.chevron.compact.down")
+                                .foregroundColor(customColour.theme)
+                        }
                     }
                 }
-            }
-            .alert("Task is updated!", isPresented: $isUpdated) {
-                Button("OK"){}
-            }
-            .alert("Task is empty", isPresented: $taskIsEmpty) {
-                Button("OK"){}
-            } message: {
-                Text("Please add a task")
-            }
-            .environmentObject(tasks)
+                .alert("Task is updated!", isPresented: $isUpdated) {
+                    Button("OK"){}
+                }
+                .alert("Task is empty", isPresented: $taskIsEmpty) {
+                    Button("OK"){}
+                } message: {
+                    Text("Please add a task")
+                }
+                .environmentObject(tasks)
+        }
     }
     
     func saveChanges() {
         if name.isEmpty {
             taskIsEmpty = true
+            feedback.notificationOccurred(.error)
         } else {
-            
             task.name = name
             task.type = type
             feedback.notificationOccurred(.success)
