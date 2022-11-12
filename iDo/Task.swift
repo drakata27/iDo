@@ -40,6 +40,7 @@ class Task: Identifiable, Codable {
         do {
             let data = try JSONEncoder().encode(tasks)
             try data.write(to: savePath, options: [.atomicWrite, .completeFileProtection])
+            objectWillChange.send()
         } catch {
             print("Unable to save data")
         }

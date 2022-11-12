@@ -32,40 +32,43 @@ struct TasksView: View {
         NavigationView {
             List {
                 ForEach(filteredTasks) { task in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(task.name)
-                                .font(.headline)
-                                .padding(2)
-                            
-                            Text(task.type)
-                                .foregroundColor(.secondary)
-                        }
-                        Spacer()
-                        if task.isCompleted && filter == .none {
+                    NavigationLink(destination: EditView(task: task)) {
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(task.name)
+                                    .font(.headline)
+                                    .padding(2)
+                                
+                                Text(task.type)
+                                    .foregroundColor(.secondary)
+                            }
                             Spacer()
-                            Image(systemName: "checkmark.circle.fill")
-                                .foregroundColor(.green)
+                            if task.isCompleted && filter == .none {
+                                Spacer()
+                                Image(systemName: "checkmark.circle.fill")
+                                    .foregroundColor(.green)
+                            }
+                        }
+                        .padding(2)
+                        .swipeActions(edge: .leading) {
+                            if task.isCompleted {
+                                Button {
+                                    tasks.toggle(task)
+                                } label: {
+                                    Label("Undo", image: "x.circle.fill")
+                                }
+                                .tint(.orange)
+                            } else {
+                                Button {
+                                    tasks.toggle(task)
+                                } label: {
+                                    Label("Done", image: "checkmark.circle.fill")
+                                }
+                                .tint(.green)
+                            }
                         }
                     }
-                    .padding(2)
-                    .swipeActions(edge: .leading) {
-                        if task.isCompleted {
-                            Button {
-                                tasks.toggle(task)
-                            } label: {
-                                Label("Undo", image: "x.circle.fill")
-                            }
-                            .tint(.orange)
-                        } else {
-                            Button {
-                                tasks.toggle(task)
-                            } label: {
-                                Label("Done", image: "checkmark.circle.fill")
-                            }
-                            .tint(.green)
-                        }
-                    }
+                    
                 }
                 .onDelete(perform: removeTasks)
             }
