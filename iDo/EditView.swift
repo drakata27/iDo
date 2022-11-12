@@ -20,10 +20,23 @@ struct EditView: View {
     @State private var isUpdated = false
     @State private var taskIsEmpty = false
     
+    let typeOptions: [String] = [
+        "University", "Work", "Self-Improvement", "Groceries", "Personal", "Fitness","Programming", "Other"
+    ]
+    @State private var selectedTypeOption = "Other"
+    
     var body: some View {
-        NavigationView {
             VStack {
-                Text("Task: \(task.name)")
+                HStack {
+                    Text("Current task:")
+                        .font(.headline)
+                    Text(task.name)
+                        .font(.headline)
+                        .foregroundColor(customColour.theme)
+                    Spacer()
+                }
+                .padding()
+                    
                 TextField("Task name", text: $name)
                     .font(.title)
                     .focused($isFocused)
@@ -34,16 +47,37 @@ struct EditView: View {
                         )
                         .padding()
                 
-                Text("Type: \(task.type)")
-                TextField("Type", text: $type)
-                    .font(.title)
-                    .focused($isFocused)
-                    .padding(4)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14)
-                                .stroke(customColour.theme, lineWidth: 2)
-                        )
+                HStack {
+                    Text("Type:")
+                        .font(.headline)
+                    Text(task.type)
+                        .font(.headline)
+                        .foregroundColor(customColour.theme)
+
+                    Spacer()
+                }
+                .padding()
+                
+                HStack {
+                    TextField("Type", text: $type)
+                        .font(.title)
+                        .focused($isFocused)
+                        .padding(4)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14)
+                                    .stroke(customColour.theme, lineWidth: 2)
+                            )
                         .padding()
+                    
+                    Picker("Please choose a color", selection: $selectedTypeOption) {
+                        ForEach(typeOptions, id: \.self) { option in
+                            Text(option)
+                        }
+                    }
+                    .onChange(of: selectedTypeOption) { newValue in
+                        type = selectedTypeOption
+                    }
+                }
                 
                 Button {
                     saveChanges()
@@ -78,8 +112,7 @@ struct EditView: View {
             } message: {
                 Text("Please add a task")
             }
-        }
-        .environmentObject(tasks)
+            .environmentObject(tasks)
     }
     
     func saveChanges() {
