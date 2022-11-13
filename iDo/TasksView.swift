@@ -13,7 +13,7 @@ struct TasksView: View {
     }
     
     enum SortType {
-        case name, date
+        case name, date, dateOldest
     }
     
     @EnvironmentObject var tasks: Tasks
@@ -81,7 +81,10 @@ struct TasksView: View {
                         Label("Sort", systemImage: "arrow.up.arrow.down")
                     }
                     
-                    Text(sortOrder == .name ? "Name" : "Date")
+                    Text(sortOrder == .name ? "Name" : sortOrder == .date ? "Date (Newest)" : "Date (Oldest)")
+                        .onTapGesture {
+                            showingConfirmationDialog = true
+                        }
                 }
                 
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -96,6 +99,7 @@ struct TasksView: View {
                         }
                     } label: {
                         Label("Theme", systemImage: "trash.fill")
+                            .foregroundColor(.red)
                     }
                     
                     EditButton()
@@ -104,13 +108,16 @@ struct TasksView: View {
             .confirmationDialog("Sort by...", isPresented: $showingConfirmationDialog) {
                 Button("Name (A-Z)") { sortOrder = .name}
                 Button("Date (Newest first)") { sortOrder = .date}
+                Button("Date (Oldest first)") { sortOrder = .dateOldest}
                 Button("Cancel", role: .cancel) {}
             }
-            .confirmationDialog("Are you sure you want to delete all tasks?", isPresented: $showingDeleteDialog) {
+            .confirmationDialog("Delete All", isPresented: $showingDeleteDialog) {
                 Button("Delete All", role: .destructive) {
                     deleteAlltasks()
                 }
                 Button("Cancel", role: .cancel) {}
+            }message: {
+                Text("Are you sure you want to delete all tasks?")
             }
             .alert("There are no tasks", isPresented: $tasksAreDeleted) {
                 Button("OK") {}
@@ -142,8 +149,10 @@ struct TasksView: View {
         
         if sortOrder == .name {
             return result.sorted { $0.name < $1.name}
-        } else {
+        } else if sortOrder == .date{
             return result.reversed()
+        } else {
+            return result
         }
     }
     
@@ -153,13 +162,14 @@ struct TasksView: View {
             let items = Set(offsets.map { reversed[$0].id })
             tasks.tasks.removeAll { items.contains($0.id)}
             tasks.save()
-        } else {
-//            tasks.tasks.remove(atOffsets: offsets)
+        } else if sortOrder == .name{
             let nameOrder = Array(tasks.tasks.sorted { $0.name < $1.name})
             let items = Set(offsets.map { nameOrder[$0].id })
             tasks.tasks.removeAll { items.contains($0.id)}
             
             tasks.save()
+        } else {
+            tasks.tasks.remove(atOffsets: offsets)
         }
     }
     
