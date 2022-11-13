@@ -154,7 +154,11 @@ struct TasksView: View {
             tasks.tasks.removeAll { items.contains($0.id)}
             tasks.save()
         } else {
-            tasks.tasks.remove(atOffsets: offsets)
+//            tasks.tasks.remove(atOffsets: offsets)
+            let nameOrder = Array(tasks.tasks.sorted { $0.name < $1.name})
+            let items = Set(offsets.map { nameOrder[$0].id })
+            tasks.tasks.removeAll { items.contains($0.id)}
+            
             tasks.save()
         }
     }
