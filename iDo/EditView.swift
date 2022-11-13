@@ -19,6 +19,7 @@ struct EditView: View {
     @State private var type = ""
     @State private var isUpdated = false
     @State private var taskIsEmpty = false
+    @State private var isTyping = false
     
     let typeOptions: [String] = [
         "University", "Work", "Self-Improvement", "Groceries", "Personal", "Fitness","Programming", "Other"
@@ -26,19 +27,9 @@ struct EditView: View {
     @State private var selectedTypeOption = "Other"
     
     var body: some View {
-        Form {
             VStack {
-                    HStack {
-                        Text("Current task:")
-                            .font(.headline)
-                        Text(task.name)
-                            .font(.headline)
-                            .foregroundColor(customColour.theme)
-                        Spacer()
-                    }
-                    .padding()
-                        
-                    TextField("Task name", text: $name)
+                Spacer()
+                TextField(task.name, text: $name, onEditingChanged: {self.isTyping = $0})
                         .font(.title)
                         .focused($isFocused)
                         .padding(4)
@@ -46,19 +37,10 @@ struct EditView: View {
                                 RoundedRectangle(cornerRadius: 14)
                                     .stroke(customColour.theme, lineWidth: 2)
                             )
-                    HStack {
-                        Text("Type:")
-                            .font(.headline)
-                        Text(task.type)
-                            .font(.headline)
-                            .foregroundColor(customColour.theme)
-
-                        Spacer()
-                    }
-                    .padding()
+                            .padding(4)
                     
                     VStack {
-                        TextField("Type", text: $type)
+                        TextField(task.type, text: $type, onEditingChanged: {self.isTyping = $0})
                             .font(.title)
                             .focused($isFocused)
                             .padding(4)
@@ -66,6 +48,7 @@ struct EditView: View {
                                     RoundedRectangle(cornerRadius: 14)
                                         .stroke(customColour.theme, lineWidth: 2)
                                 )
+                                .padding(4)
                         
                         Picker("Select type", selection: $selectedTypeOption) {
                             ForEach(typeOptions, id: \.self) { option in
@@ -87,9 +70,11 @@ struct EditView: View {
                     .padding()
                     .buttonStyle(BlueButton())
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
                 }
                 .navigationTitle("Edit Task")
                 .navigationBarTitleDisplayMode(.inline)
+                .navigationBarHidden(isTyping ? true : false)
                 .toolbar {
                     ToolbarItemGroup(placement: .keyboard) {
                         Spacer()
@@ -110,7 +95,6 @@ struct EditView: View {
                     Text("Please add a task")
                 }
                 .environmentObject(tasks)
-        }
     }
     
     func saveChanges() {
@@ -132,7 +116,9 @@ struct EditView: View {
 
 struct EditView_Previews: PreviewProvider {
     static var previews: some View {
-        EditView(task: Task.example)
-            .environmentObject(Tasks())
+        NavigationView {
+            EditView(task: Task.example)
+                .environmentObject(Tasks())
+        }
     }
 }

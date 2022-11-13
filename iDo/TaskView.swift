@@ -26,6 +26,7 @@ struct TaskView: View {
     @State private var type = ""
     @State private var isAdded = false
     @State private var taskIsEmpty = false
+    @State private var isTyping = false
     
     let typeOptions: [String] = [
         "University", "Work", "Self-Improvement", "Groceries", "Personal", "Fitness","Programming", "Other"
@@ -39,7 +40,7 @@ struct TaskView: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextField("Task name", text: $name)
+                TextField("Task name", text: $name, onEditingChanged: {self.isTyping = $0})
                     .font(.title)
                     .focused($isFocused)
                     .padding(4)
@@ -50,7 +51,7 @@ struct TaskView: View {
                         .padding()
                     
                 VStack {
-                    TextField("Task type", text: $type)
+                    TextField("Task type", text: $type, onEditingChanged: {self.isTyping = $0})
                         .font(.title)
                         .focused($isFocused)
                         .padding(4)
@@ -85,6 +86,7 @@ struct TaskView: View {
             }
             .environmentObject(tasks)
             .navigationTitle("Create a task")
+            .navigationBarHidden(isTyping ? true : false)
             .toolbar {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
